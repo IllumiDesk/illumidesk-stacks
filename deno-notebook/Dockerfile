@@ -17,18 +17,16 @@ USER "${NB_USER}"
 # Install Jupyter Console and Kernel Gateway
 RUN pip install jupyter-console jupyter_kernel_gateway
 
-# Install tslab
-ENV PATH "$PATH:${CONDA_DIR}/.npm-global/bin"
-RUN mkdir "${CONDA_DIR}/.npm-global" \
- && npm config set prefix "${CONDA_DIR}/.npm-global" \
- && npm install -g tslab \
- && tslab install \
- && rm -Rf "${HOME}/.npm-global/bin/tslab"
+# Install deno
+RUN curl -fsSL https://deno.land/x/install/install.sh | sh \
+ && "${HOME}/.deno/bin/deno" jupyter --unstable --install \
+ && mv "${HOME}/.deno/bin/deno" "${CONDA_DIR}/bin" \
+ && rm -Rf "${HOME}/.deno/bin/deno"
 
-RUN rm -Rf "${HOME}/.local/share/jupyter/kernels/tslab" \
-  && mkdir -p "${CONDA_DIR}/share/jupyter/kernels/tslab"
-COPY --chown=${NB_UID}:${NB_GID} "setup-scripts/kernel-tslab.json" "${CONDA_DIR}/share/jupyter/kernels/tslab/kernel.json"
- 
+RUN rm -Rf "${HOME}/.local/share/jupyter/kernels/deno" \
+ && mkdir -p "${CONDA_DIR}/share/jupyter/kernels/deno"
+COPY --chown=${NB_UID}:${NB_GID} "setup-scripts/kernel-deno.json" "${CONDA_DIR}/share/jupyter/kernels/deno/kernel.json"
+
 # update permissions as root
 USER root
 RUN fix-permissions /etc/jupyter/ \

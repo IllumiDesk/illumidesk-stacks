@@ -1,3 +1,4 @@
+duckduckgo-search
 psycopg2-binary
 gpt4all
 jupyter_kernel_gateway
