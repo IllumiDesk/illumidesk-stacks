@@ -1,0 +1,7 @@
+black
+docker
+flake8
+pytest
+requests
+tabulate
+transifex-client
