@@ -4,7 +4,7 @@
 
 # Use bash for inline if-statements in target
 SHELL:=bash
-TAG:=julia-1.6.1
+TAG:=latest
 OWNER:=illumidesk
 VENV_NAME?=venv
 VENV_BIN=$(shell pwd)/${VENV_NAME}/bin
@@ -13,7 +13,10 @@ VENV_ACTIVATE=. ${VENV_BIN}/activate
 PYTHON=${VENV_BIN}/python3
 
 # Need to list the images in build dependency order
-ALL_STACKS:=umich-notebook
+ALL_STACKS:=:= \
+	python-notebook \
+	deno-notebook \
+	node-notebook
 
 ALL_IMAGES:=$(ALL_STACKS)
 
